@@ -1,0 +1,333 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+
+
+// ヘッダー部分
+.header {
+    // ヘッダー部分。SP版はスクロール時に上部に固定
+
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+
+    .logo img {
+        // ロゴ部分。中央ぞろえのためすこし調整
+        width: 150px;
+        transform: translateY(5px);
+    }
+
+    .gnav-hidden {
+        // チェックボックス部分。.headerを基準に固定位置
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        display: none;
+    }
+
+    #gnav-open {
+        // ハンバーガーメニュー表示位置。.headerを基準に固定位置 
+
+        display: block;
+        width: 40px;
+        height: 40px;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 200;
+        background: url(../img/ico-nav.svg) center center no-repeat;
+    }
+
+    @include mq {
+        // PC版のヘッダーは左上に200px幅で固定
+
+        width: 200px;
+        height: 100px;
+
+        .logo {
+            z-index: 400;
+        }
+
+        .gnav-hidden,
+        #gnav-open {
+            display: none;
+        }
+    }
+}
+
+
+#gnav {
+    // ナビゲーション部分。SP版は右側からスライドして全面表示
+
+    background-color: #fff;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    z-index: 300;
+    transform: translateX(105%);
+
+    #gnav-close {
+        // ✕のクローズボタン。
+        display: block;
+        width: 40px;
+        height: 40px;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: url(../img/ico-nav-close.svg) center center no-repeat;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    .gnav-list {
+        // メニュー部分
+
+        text-align: center;
+        margin-top: 140px;
+
+        li {
+            text-transform: uppercase;
+            margin: 1.5em;
+
+            a {
+                text-decoration: none;
+                color: #000;
+                font-size: .9em;
+            }
+        }
+    }
+
+    .link {
+        // インスタなどのリンク部分
+
+        display: flex;
+        height: calc(100vh - 312PX - 140px);
+        justify-content: center;
+        align-items: center;
+
+        li {
+            margin: 0 10px;
+        }
+    }
+
+    @include mq {
+        // PC版ナビゲーション部分
+
+        width: 200px;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        transform: translateX(0%);
+
+        #gnav-close {
+            display: none;
+        }
+
+        .gnav-list {
+            text-align: start;
+        }
+
+        .link {
+            padding: 60px 0;
+            align-items: end;
+        }
+    }
+}
+
+#gnav-input:checked~#gnav {
+    // ハンバーガーメニュークリック時の動き
+    transform: translateX(0%);
+}
+
+// MV部分
+
+.mv {
+    height: 100vh;
+    background: url("../img/mv-bg@2x.jpg");
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    img {
+        // MVの画像部分
+        height: 55vh;
+
+    }
+
+    .latest {
+        // MVのテキスト部分。MV全体のFlexBoxの中にもう一つFlexBoxを入れる
+
+        color: #000;
+        position: absolute;
+        bottom: 60px;
+        left: 10px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+
+        p {
+            width: fit-content;
+            background-color: #fff;
+            padding: 0px 3px;
+        }
+    }
+
+    // テキスト各行の設定
+    .datelatest {
+        font-size: .8em;
+        margin-bottom: 10px;
+    }
+
+    .titlelatest1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    .titlelatest2 {
+        font-size: 1.5em;
+    }
+
+    @include mq {
+        // PC版のMV部分。
+
+        margin-left: 200px;
+
+        img {
+            height: 80vh;
+        }
+
+        .titlelatest1,
+        .titlelatest2 {
+            font-size: 2.5vw;
+        }
+    }
+}
+
+// バックナンバー部分
+.backnumber {
+    width: 100%;
+    color: #000;
+
+    &-title {
+        // バックナンバータイトル部分
+        margin: 20px auto 20px 10px;
+
+        h1 {
+            font-size: 1em;
+            margin: 0 10px;
+        }
+
+        h2 {
+            font-size: 0.7em;
+            margin: 0 10px;
+        }
+    }
+
+    dl div {
+        // バックナンバー画像と説明部分
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+        height: auto;
+        padding: 40px 20px;
+
+        dt img {
+            // バックナンバー画像
+            width: 60vw;
+            max-width: 300px;
+            margin-bottom: 20px;
+            filter: drop-shadow(2px 2px 5px #aaaaaa);
+        }
+
+        dd {
+            // バックナンバータイトルと日付
+            align-self: start;
+            // margin-left: 20px;
+
+            &.date {
+                font-size: 12px;
+                line-height: 2;
+            }
+
+            &.title {
+                font-size: 16px;
+                line-height: 2;
+                font-weight: bold;
+            }
+        }
+    }
+
+    @include mq {
+        // PC版バックナンバー部分。
+        position: relative;
+        left: 200px;
+
+        &-title {
+            // バックナンバータイトル部分
+            margin: 30px auto 30px 20px;
+
+            h1 {
+                font-size: 1.3em;
+            }
+        }
+
+        dl {
+            // ナビゲーションの200pxを除いた画面に２列表示。
+            display: flex;
+            flex-wrap: wrap;
+
+            div {
+                width: calc((100vw - 200px)/2);
+                height: auto;
+                padding: 60px 40px;
+
+                dt img {
+                    width: 18vw;
+                    margin-bottom: 40px;
+                }
+            }
+        }
+    }
+}
+
+// バックナンバーの背景の色指定
+div {
+
+    .bn101 {
+        background-color: #ecf4f9;
+    }
+
+    .bn100 {
+        background-color: #fbf3d2;
+    }
+
+    .bn99 {
+        background-color: #f9f2eb;
+    }
+
+    .bn98 {
+        background-color: #fae8c2;
+    }
+
+    .bn97 {
+        background-color: #e2efe7;
+    }
+
+    .bn96 {
+        background-color: #f2f5fb;
+    }
+
+}
